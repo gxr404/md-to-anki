@@ -37,3 +37,5 @@ md-to-anki ./example/simple.md
 
 # ✅ Simple Card: /xx/xxx/xx/example/simple.apkg
 ```
+
+![example](./example/resources/example.png)
