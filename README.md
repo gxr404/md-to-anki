@@ -11,11 +11,6 @@ npm i -g md-to-anki
 ## 使用
 
 ```bash
-md-to-anki ./example/simple.md
-# ✅ Simple Card: /xx/xxx/xx/example/simple.apkg
-```
-
-```bash
 $ md-to-anki --help
 
   Usage:
@@ -33,4 +28,12 @@ $ md-to-anki --help
     -d, --deckName <deckName>  卡片组名 eg: "-d Test", Default: 取md文件中的"# xx" 
     -h, --help                 Display this message 
     -v, --version              Display version number 
+```
+
+## example
+
+```bash
+md-to-anki ./example/simple.md
+
+# ✅ Simple Card: /xx/xxx/xx/example/simple.apkg
 ```
