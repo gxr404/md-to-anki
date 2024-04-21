@@ -1,0 +1,53 @@
+{
+  "name": "md-to-anki",
+  "type": "module",
+  "version": "0.0.8",
+  "description": "markdown to anki",
+  "author": "gxr404",
+  "license": "ISC",
+  "keywords": ["anki", "template"],
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "main": "./dist/index.cjs",
+  "types": "./dist/index.d.ts",
+  "bin": "./bin/index.mjs",
+  "scripts": {
+    "build": "unbuild",
+    "dev": "unbuild --stub",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "test": "vitest run",
+    "test:example": "node bin/index.mjs example",
+    "prepublish": "run-s test build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gxr404/md-to-anki.git"
+  },
+  "dependencies": {
+    "@gxr1020/anki-apkg-export": "^0.0.2",
+    "axios": "^1.6.8",
+    "cac": "^6.7.14",
+    "fast-glob": "^3.3.2",
+    "marked": "^12.0.2",
+    "marked-highlight": "^2.1.1",
+    "mime-types": "^2.1.35",
+    "shiki": "^1.3.0"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^2.15.0",
+    "@rollup/plugin-replace": "^5.0.5",
+    "@types/mime-types": "^2.1.4",
+    "@types/node": "^20.12.7",
+    "eslint": "^9.0.0",
+    "eslint-plugin-format": "^0.1.1",
+    "npm-run-all": "^4.1.5",
+    "type-fest": "^4.15.0",
+    "unbuild": "^2.0.0",
+    "vitest": "^1.5.0"
+  }
+}
