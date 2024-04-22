@@ -61,67 +61,6 @@ exports[`parse card list > normal parse card list 1`] = `
 }
 `;
 
-exports[`parse card list > normal split cards 1`] = `
-{
-  "cards": [
-    {
-      "back": "<p>test1</p>
-<pre><code class="core lang-js"><pre class="shiki vitesse-dark" style="background-color:#121212;color:#dbd7caee" tabindex="0"><code><span class="line"><span style="color:#CB7676">var</span><span style="color:#BD976A"> a</span><span style="color:#666666"> =</span><span style="color:#4C9A91"> 13</span></span></code></pre>
-</code></pre><blockquote>
-<p>test</p>
-</blockquote>
-<p><strong>abc</strong>13123</p>
-",
-      "front": "<h2>test</h2>
-",
-      "tags": [],
-    },
-    {
-      "back": "<p>132</p>
-",
-      "front": "<h2>test3</h2>
-",
-      "tags": [],
-    },
-    {
-      "back": "<p><img src="40e4a2515baa0cd7cc47f7ce048b6426.jpg" alt=""></p>
-",
-      "front": "<h2>test4</h2>
-",
-      "tags": [],
-    },
-    {
-      "back": "<p><img src="39ee43d362145cff5c1cea14f0f39840.jpg" alt=""></p>
-<blockquote>
-<p>test</p>
-</blockquote>
-",
-      "front": "<h2>test5</h2>
-",
-      "tags": [
-        "tag1",
-        "tag2",
-        "tag3",
-      ],
-    },
-  ],
-  "media": [
-    {
-      "checksum": "40e4a2515baa0cd7cc47f7ce048b6426",
-      "data": "local data",
-      "fileName": "40e4a2515baa0cd7cc47f7ce048b6426.jpg",
-      "srcStr": "src="40e4a2515baa0cd7cc47f7ce048b6426.jpg"",
-    },
-    {
-      "checksum": "39ee43d362145cff5c1cea14f0f39840",
-      "data": "remote data",
-      "fileName": "39ee43d362145cff5c1cea14f0f39840.jpg",
-      "srcStr": "src="39ee43d362145cff5c1cea14f0f39840.jpg"",
-    },
-  ],
-}
-`;
-
 exports[`split Cards > normal split cards 1`] = `
 {
   "deckName": "Test Title",

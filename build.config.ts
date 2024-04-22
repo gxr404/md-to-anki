@@ -5,6 +5,7 @@ export default defineBuildConfig({
   entries: [
     'src/cli.ts',
     'src/index.ts',
+    'src/constants.ts',
     // ...fg.sync('src/!(*.d).ts'),
     // .map(i => ({
     //   input: i.slice(0, -3),
@@ -17,7 +18,7 @@ export default defineBuildConfig({
     emitCJS: false,
     inlineDependencies: true,
     // replace: {
-
+    //   __BASE_PATH__: import.meta.url
     // }
   },
 })

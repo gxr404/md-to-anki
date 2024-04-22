@@ -1,13 +1,12 @@
 import { readFileSync } from 'node:fs'
 import type { PartialDeep } from 'type-fest'
 
+import { BASE_PATH, THEME } from './constants'
 import { merge } from './utils'
-import { THEME } from './constants'
 
 export function getDefaultConfig(theme = THEME.NORD): IConfig {
   const themeKey = (THEME as any)[String(theme).toUpperCase()]
-  const themePath = `../../theme/${themeKey}`
-  const basePath = import.meta.url
+  const themePath = `../theme/${themeKey}`
   return {
     code: {
       defaultLanguage: 'bash',
@@ -27,9 +26,9 @@ export function getDefaultConfig(theme = THEME.NORD): IConfig {
     },
     template: {
       formats: {
-        question: readFileSync(new URL(`${themePath}/question.html`, basePath)).toString(),
-        answer: readFileSync(new URL(`${themePath}/answer.html`, basePath)).toString(),
-        css: readFileSync(new URL(`${themePath}/formats.css`, basePath)).toString(),
+        question: readFileSync(new URL(`${themePath}/question.html`, BASE_PATH)).toString(),
+        answer: readFileSync(new URL(`${themePath}/answer.html`, BASE_PATH)).toString(),
+        css: readFileSync(new URL(`${themePath}/formats.css`, BASE_PATH)).toString(),
       },
     },
   }

@@ -5,3 +5,5 @@ export const THEME = {
   MINIMAL: 'minimal',
   NORD: 'nord',
 }
+
+export const BASE_PATH = import.meta.url
