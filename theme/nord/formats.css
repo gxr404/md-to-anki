@@ -308,31 +308,4 @@ u {
   color: var(--underline-fg);
 }
 
-
-
-/* -------------------------------------------------- CUSTOM FONTS */
-@font-face {
-  font-family: Rubik;
-  src: local("Rubik-Regular"), url("_Rubik-Regular.woff2") format("woff2");
-  font-style: normal;
-  font-weight: normal;
-}
-@font-face {
-  font-family: Rubik;
-  src: local("Rubik-Bold"), url("_Rubik-Bold.woff2") format("wofff2");
-  font-style: normal;
-  font-weight: bold;
-}
-@font-face {
-  font-family: Rubik;
-  src: local("Rubik-Italic"), url("_Rubik-Italic.woff2") format("wofff2");
-  font-style: italic;
-  font-weight: normal;
-}
-@font-face {
-  font-family: Rubik;
-  src: local("Rubik-BoldItalic"), url("_Rubik-BoldItalic.woff2") format("wofff2");
-  font-style: italic;
-  font-weight: bold;
-}
 /* -------------------------------------------------- END OF THEME */

@@ -298,30 +298,4 @@ u {
   color: var(--underline-fg);
 }
 
-
-/* -------------------------------------------------- CUSTOM FONTS */
-@font-face {
-  font-family: Inter;
-  src: local("Inter-Regular"), url("_Inter-Regular.woff2") format("woff2");
-  font-style: normal;
-  font-weight: normal;
-}
-@font-face {
-  font-family: Inter;
-  src: local("Inter-Bold"), url("_Inter-Bold.woff2") format("wofff2");
-  font-style: normal;
-  font-weight: bold;
-}
-@font-face {
-  font-family: Inter;
-  src: local("Inter-Italic"), url("_Inter-Italic.woff2") format("wofff2");
-  font-style: italic;
-  font-weight: normal;
-}
-@font-face {
-  font-family: Inter;
-  src: local("Inter-BoldItalic"), url("_Inter-BoldItalic.woff2") format("wofff2");
-  font-style: italic;
-  font-weight: bold;
-}
 /* -------------------------------------------------- END OF THEME */
