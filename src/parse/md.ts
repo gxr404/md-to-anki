@@ -18,11 +18,7 @@ async function initMarked() {
       async: true,
       async highlight(code, lang) {
         const langAlias: any = {
-          // 'c#': 'csharp',
-          // 'md': 'markdown',
-          // 'rb': 'ruby',
-          // 'py': 'python',
-          // 'sh': 'bash',
+          sol: 'solidity',
         }
         const htmlStr = await codeToHtml(code, {
           lang: langAlias[lang] || lang,

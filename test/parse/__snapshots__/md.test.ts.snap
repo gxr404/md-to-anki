@@ -1,5 +1,10 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
+exports[`parse markdown > parse alias sol code 1`] = `
+"<pre><code class="core lang-sol"><pre class="shiki vitesse-dark" style="background-color:#121212;color:#dbd7caee" tabindex="0"><code><span class="line"><span style="color:#4D9375">pragma</span><span style="color:#4D9375"> solidity</span><span style="color:#C99076"> ^0.8.4</span><span style="color:#666666">;</span></span></code></pre>
+</code></pre>"
+`;
+
 exports[`parse markdown > parse bash code 1`] = `
 "<pre><code class="core lang-sh"><pre class="shiki vitesse-dark" style="background-color:#121212;color:#dbd7caee" tabindex="0"><code><span class="line"><span style="color:#B8A965">echo</span><span style="color:#BD976A"> $a</span></span></code></pre>
 </code></pre>"

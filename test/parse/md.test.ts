@@ -10,8 +10,8 @@ describe('parse markdown', () => {
     const htmlStr = await md2Html('\n```js\nvar a = 123\n```\n')
     expect(htmlStr).toMatchSnapshot()
   })
-  it('parse bash code', async () => {
-    const htmlStr = await md2Html('\n```sh\necho $a\n```\n')
+  it('parse alias sol code', async () => {
+    const htmlStr = await md2Html('\n```sol\npragma solidity ^0.8.4;\n```\n')
     expect(htmlStr).toMatchSnapshot()
   })
   it('parse error code', async () => {
