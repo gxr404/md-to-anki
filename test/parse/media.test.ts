@@ -1,13 +1,16 @@
-import fs from 'node:fs'
-import { afterEach, describe, expect, it, vi } from 'vitest'
+import * as fs from 'node:fs/promises'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import axios from 'axios'
 
-import { addMediaToCards, mediaParse } from '../../src/parse/media'
+import { addMediaToCards, mediaParse, resetMediaList } from '../../src/parse/media'
 
 // mock 模块(影响全局)
-vi.mock('fs')
+vi.mock('node:fs/promises')
 vi.mock('axios')
 
+beforeEach(() => {
+  resetMediaList()
+})
 afterEach(() => {
   vi.restoreAllMocks()
 })
@@ -24,8 +27,7 @@ describe('mediaParse', () => {
   })
 
   it('parses local media file(解析含本地的媒体文件)', async () => {
-    vi.spyOn(fs, 'readFileSync').mockImplementation(() => 'local data')
-
+    vi.spyOn(fs, 'readFile').mockImplementation(async () => 'local data')
     const res = await mediaParse('<img src="test.png">', '/test/132/xx.md')
     expect(res.mdStr).toEqual('<img src="40e4a2515baa0cd7cc47f7ce048b6426.png">')
     expect(res.mediaList.length).toEqual(1)
@@ -56,10 +58,11 @@ describe('addMediaToCards', () => {
   })
 
   it('卡片列表含媒体文件', async () => {
-    vi.spyOn(fs, 'readFileSync').mockImplementation(() => 'local data')
+    vi.spyOn(fs, 'readFile').mockImplementation(async () => 'local data')
     vi.spyOn(axios, 'get').mockImplementation(async () => ({
       data: 'remote data',
     }))
+
     const cardsList = [
       {
         front: '<img src="123.jpg">',

@@ -1,6 +1,7 @@
 import path from 'node:path'
 import process from 'node:process'
-import { readFileSync } from 'node:fs'
+import { readFile } from 'node:fs/promises'
+// import ora from 'ora'
 
 import type { ICliOption } from './cli'
 import { validatePath } from './utils'
@@ -23,11 +24,13 @@ export async function main(options: IOptions) {
   if (!validate)
     process.exit(1)
   let userConfig: Partial<IConfig> = {}
+
   if (userConfigPath) {
     const configValidate = validatePath(userConfigPath, ['.json'])
     if (!configValidate)
       process.exit(1)
-    userConfig = JSON.parse(readFileSync(userConfigPath).toString())
+    const userConfigBuffer = await readFile(userConfigPath)
+    userConfig = JSON.parse(userConfigBuffer.toString())
   }
   let targetFile
   if (!target) {
@@ -39,6 +42,9 @@ export async function main(options: IOptions) {
   }
   const config = initConfig(userConfig)
 
+  const ora = await import('ora')
+  const spinner = ora.default('Transforms...').start()
+  // console.time('transforms')
   const {
     cards = [],
     media,
@@ -48,13 +54,16 @@ export async function main(options: IOptions) {
     deckName: deckName || '',
     targetFile: target || '',
   })
-
+  // console.timeEnd('transforms')
   if (!cards.length) {
-    console.error('No cards found. Check you markdown file(s)')
+    spinner.fail('No cards found. Check you markdown file(s)')
+    // console.error('No cards found. Check you markdown file(s)')
     process.exit(1)
   }
-
   const realDeckName = deckName || parseDeckName || config.deck.defaultName
+
+  spinner.text = 'Export...'
+
   try {
     await exportDeck({
       cards,
@@ -67,5 +76,6 @@ export async function main(options: IOptions) {
     console.error(e?.message || 'unknown error')
     process.exit(1)
   }
-  console.log(`✅ ${realDeckName}: ${targetFile}`)
+
+  spinner.succeed(`"${realDeckName}"含卡片${cards.length}张: ${targetFile}`)
 }

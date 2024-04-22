@@ -11,7 +11,7 @@ describe('parse markdown', () => {
     expect(htmlStr).toMatchSnapshot()
   })
   it('parse bash code', async () => {
-    const htmlStr = await md2Html('\n```bash\necho $a\n```\n')
+    const htmlStr = await md2Html('\n```sh\necho $a\n```\n')
     expect(htmlStr).toMatchSnapshot()
   })
   it('parse error code', async () => {

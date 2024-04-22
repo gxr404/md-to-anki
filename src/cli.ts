@@ -21,9 +21,9 @@ function createCli() {
     .option('-t, --target <targetFile>', '输出的anki文件名 eg: "-d targe.apkg"')
     .option('-c, --config <configFile>', '配置文件 eg: "-c ./config.json"')
     .option('-d, --deckName <deckName>', '卡片组名 eg: "-d Test", Default: 取md文件中的"# xx"')
-    .action(async (mdFile: string, options: ICliOption) => {
+    .action((mdFile: string, options: ICliOption) => {
       try {
-        await main({
+        main({
           sourcePath: mdFile,
           ...options,
         })

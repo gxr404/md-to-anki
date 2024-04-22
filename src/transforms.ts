@@ -1,4 +1,4 @@
-import fs from 'node:fs'
+import { lstat } from 'node:fs/promises'
 import fg from 'fast-glob'
 
 import { AVAILABLE_FILE_EXTENSIONS } from './constants'
@@ -15,8 +15,8 @@ export async function transforms(params: ITransformsParams) {
   let parseDeckName
   const cards: ICard[] = []
   const media: IMedia[] = []
-
-  if (fs.lstatSync(sourcePath).isDirectory()) {
+  const stats = await lstat(sourcePath)
+  if (stats.isDirectory()) {
     const allowedExtStr = AVAILABLE_FILE_EXTENSIONS.map(ex => ex.replace('.', '')).join(',')
     const files = fg.globSync(`${sourcePath}/**/*.{${allowedExtStr}}`, { dot: true })
     const promiseList = files.map(async (file) => {

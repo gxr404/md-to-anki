@@ -1,4 +1,4 @@
-import fs from 'node:fs'
+import { writeFile } from 'node:fs/promises'
 import { AnkiExport } from '@gxr1020/anki-apkg-export'
 import { getConfig } from './config'
 import type { ICard } from './parse'
@@ -33,5 +33,5 @@ export async function exportDeck(params: IExportDeckParams) {
   })
 
   const zip = await ankiExport.save()
-  fs.writeFileSync(targetFile, zip, 'binary')
+  await writeFile(targetFile, zip, 'binary')
 }

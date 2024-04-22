@@ -1,5 +1,5 @@
 import path from 'node:path'
-import fs from 'node:fs'
+import { readFile } from 'node:fs/promises'
 import crypto from 'node:crypto'
 import axios from 'axios'
 import mime from 'mime-types'
@@ -27,26 +27,27 @@ function addMedia(media: IMedia) {
 }
 /** 从cards 获取 media信息 */
 export async function addMediaToCards(cards: ICard[], sourceFile: string) {
-  // 重置全局的mediaList
-  mediaList.splice(0, mediaList.length)
   for (const card of cards) {
     const frontMedia = await mediaParse(card.front, sourceFile)
     const backMedia = await mediaParse(card.back, sourceFile)
     card.front = frontMedia.mdStr
     card.back = backMedia.mdStr
+    frontMedia.mediaList.forEach(addMedia)
+    backMedia.mediaList.forEach(addMedia)
   }
   return mediaList
+}
+
+/** 重置全局的mediaList */
+export function resetMediaList() {
+  mediaList.splice(0, mediaList.length)
 }
 
 export async function mediaParse(mdStr: string, sourceFile: string) {
   const srcArr = mdStr.match(srcReg) || []
   const urlArr = srcArr.map(str => str.replace(srcReg, '$1'))
-  const promiseList = urlArr.map(async (url: string) => {
-    const media = await getMedia(url, sourceFile)
-    addMedia(media)
-    return media
-  })
 
+  const promiseList = urlArr.map(async (url: string) => getMedia(url, sourceFile))
   const mediaList = await Promise.all(promiseList)
 
   const newMdStr = mdStr.replace(srcReg, (src: string, url: string) => {
@@ -81,7 +82,7 @@ async function getMedia(urlStr: string, sourceFile: string): Promise<IMedia> {
   else {
     const filePath = path.resolve(path.dirname(sourceFile), urlStr)
     fileExt = path.extname(filePath)
-    bufferData = fs.readFileSync(filePath)
+    bufferData = await readFile(filePath)
   }
 
   const checksum = crypto

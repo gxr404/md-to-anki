@@ -1,12 +1,17 @@
-import { readFileSync } from 'node:fs'
+import { readFile } from 'node:fs/promises'
 import { getConfig } from '../config'
 import { trimArray } from '../utils'
 import { md2Html } from './md'
-import { addMediaToCards } from './media'
+import { addMediaToCards, mediaList, resetMediaList } from './media'
 
 export async function parseMarkdown(file: string) {
-  const mdString = readFileSync(file).toString()
-  const { cards, media, deckName } = await splitByCards(mdString, file)
+  const mdBuffer = await readFile(file)
+  const mdString = mdBuffer.toString()
+  const { rawCards, deckName } = await splitByCards(mdString)
+  // console.time('parseCardList')
+  const { cards, media } = await parseCardList(rawCards, file)
+  // console.timeEnd('parseCardList')
+
   return {
     cards,
     media,
@@ -20,32 +25,14 @@ export interface ICard {
   tags: string[]
 }
 
-export async function splitByCards(mdString: string, sourceFile: string) {
+export async function splitByCards(mdString: string) {
   const config = getConfig()
   const rawCards = mdString
     .split(new RegExp(config.card.separator, 'm'))
     .map((line: string) => line.trim())
-
-  // console.log('card数:', rawCards.length, rawCards)
-
-  const deckName = getDeckName(rawCards)
-  // 移除牌组的title 为卡片内容
-  // const titleReg = new RegExp(config.deck.titleSeparator)
-  // rawCards = rawCards.filter((str: string) => !titleReg.test(str))
-  const dirtyCards = await Promise.all(rawCards.map((str: string) => cardParse(str)))
-
-  const cards = dirtyCards
-    .filter(card => Boolean(card))
-    // card should have front and back sides
-    .filter(card => card?.front && card?.back) as ICard[]
-
-  // get media from markdown file
-  const media = await addMediaToCards(cards, sourceFile)
-
   return {
-    deckName,
-    cards,
-    media,
+    deckName: getDeckName(rawCards),
+    rawCards,
   }
 }
 
@@ -61,7 +48,31 @@ function getDeckName(rawCards: string[]) {
   return deckName.replace(/(#\s|\n)/g, '').trim()
 }
 
-export async function cardParse(cardStr: string = '') {
+export async function parseCardList(rawCards: string[], sourceFile: string) {
+  resetMediaList()
+  const dirtyCards = await Promise.all(
+    rawCards.map(async (str: string) => {
+      // console.time(`parseCard#${i}`)
+      const card = await parseCard(str)
+      // console.timeEnd(`parseCard#${i}`)
+
+      if (card)
+        await addMediaToCards([card], sourceFile)
+      return card
+    }),
+  )
+
+  const cards = dirtyCards
+    .filter(card => Boolean(card))
+    // card should have front and back sides
+    .filter(card => card?.front && card?.back) as ICard[]
+  return {
+    cards,
+    media: mediaList,
+  }
+}
+
+export async function parseCard(cardStr: string = '') {
   const config = getConfig()
   const splitCardReg = new RegExp(`^${config.card.frontBackSeparator}$`, 'm')
   // 卡片的内容 按每一行分割
