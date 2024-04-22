@@ -1,16 +1,17 @@
 import fs from 'node:fs'
 import path from 'node:path'
+import chalk from 'chalk'
 
 export function validatePath(checkPath: string, exts: string[]) {
   if (!fs.existsSync(checkPath)) {
-    console.log(`× "${checkPath}" 不存在`)
+    console.error(`${chalk.red('✖')} "${checkPath}" 不存在`)
     return false
   }
 
   const ext = path.extname(checkPath)
 
   if (ext && !exts.includes(ext)) {
-    console.log(`× "${checkPath}" 非法文件后缀${exts.join('/')}`)
+    console.error(`${chalk.red('✖')} "${checkPath}" 非法文件后缀${exts.join('/')}`)
     return false
   }
 

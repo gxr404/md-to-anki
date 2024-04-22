@@ -1,11 +1,12 @@
 import path from 'node:path'
 import process from 'node:process'
 import { readFile } from 'node:fs/promises'
-// import ora from 'ora'
+import chalk from 'chalk'
+import ora from 'ora'
 
 import type { ICliOption } from './cli'
 import { validatePath } from './utils'
-import { AVAILABLE_FILE_EXTENSIONS } from './constants'
+import { AVAILABLE_FILE_EXTENSIONS, THEME } from './constants'
 import { transforms } from './transforms'
 import { initConfig } from './config'
 import type { IConfig } from './config'
@@ -16,15 +17,30 @@ interface IOptions extends ICliOption {
 }
 
 export async function main(options: IOptions) {
-  const { sourcePath: rawSourcePath, deckName, target, config: rawUserConfigPath } = options
+  const {
+    sourcePath: rawSourcePath,
+    deckName,
+    target,
+    config: rawUserConfigPath,
+    theme: rawTheme,
+  } = options
   const sourcePath = path.resolve(rawSourcePath)
   const userConfigPath = rawUserConfigPath ? path.resolve(rawUserConfigPath) : ''
-  const validate = validatePath(sourcePath, AVAILABLE_FILE_EXTENSIONS)
 
+  // sourcePath validate
+  const validate = validatePath(sourcePath, AVAILABLE_FILE_EXTENSIONS)
   if (!validate)
     process.exit(1)
-  let userConfig: Partial<IConfig> = {}
 
+  // theme validate
+  const theme = String(rawTheme).toUpperCase()
+  if (!(THEME as any)[theme]) {
+    console.error(`${chalk.red('✖')} 不存在的主题，可选为${Object.values(THEME).join(' / ')}`)
+    process.exit(1)
+  }
+
+  // userConfigPath validate
+  let userConfig: Partial<IConfig> = {}
   if (userConfigPath) {
     const configValidate = validatePath(userConfigPath, ['.json'])
     if (!configValidate)
@@ -32,6 +48,8 @@ export async function main(options: IOptions) {
     const userConfigBuffer = await readFile(userConfigPath)
     userConfig = JSON.parse(userConfigBuffer.toString())
   }
+
+  // userConfigPath validate
   let targetFile
   if (!target) {
     const ext = path.extname(sourcePath)
@@ -40,11 +58,11 @@ export async function main(options: IOptions) {
   else {
     targetFile = path.resolve(target)
   }
-  const config = initConfig(userConfig)
 
-  const ora = await import('ora')
-  const spinner = ora.default('Transforms...').start()
+  const config = initConfig(userConfig, theme)
+  const spinner = ora('Transforms...').start()
   // console.time('transforms')
+  // transform
   const {
     cards = [],
     media,
@@ -56,14 +74,13 @@ export async function main(options: IOptions) {
   })
   // console.timeEnd('transforms')
   if (!cards.length) {
-    spinner.fail('No cards found. Check you markdown file(s)')
+    spinner.fail('不存在任何卡片, 请检查markdown文件')
     // console.error('No cards found. Check you markdown file(s)')
     process.exit(1)
   }
+
   const realDeckName = deckName || parseDeckName || config.deck.defaultName
-
   spinner.text = 'Export...'
-
   try {
     await exportDeck({
       cards,

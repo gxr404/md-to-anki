@@ -1,6 +1,6 @@
 # md-to-anki
 
-> fork自[mdanki](https://github.com/ashlinchak/mdanki), 优化了卡片样式
+> fork自[mdanki](https://github.com/ashlinchak/mdanki), 结合[anki-prettify](https://github.com/pranavdeshai/anki-prettify)优化卡片样式
 
 ## 安装
 
@@ -23,13 +23,12 @@ $ md-to-anki --help
     $ md-to-anki --help
 
   Options:
-    -t, --target <targetFile>  输出的anki文件名 eg: "-d targe.apkg" 
-    -c, --config <configFile>  配置文件 eg: "-c ./config.json" 
-    -d, --deckName <deckName>  卡片组名 eg: "-d Test", Default: 取md文件中的"# xx" 
-    -h, --help                 Display this message 
-    -v, --version              Display version number 
-```
-
+    -t, --target <targetFile>  输出的anki文件名 eg: "-d targe.apkg"
+    -c, --config <configFile>  配置文件 eg: "-c ./config.json"
+    -s, --theme <theme>        样式主题可选 nord/minimal/dracula (default: nord)
+    -d, --deckName <deckName>  卡片组名 eg: "-d Test", Default: 取md文件中的"# xx"
+    -h, --help                 Display this message
+    -v, --version              Display version number
 ## example
 
 ```bash
@@ -42,4 +41,5 @@ md-to-anki ./example/simple.md
 
 ## TODO
 
-- [ ] 更多模板主题选择
+- [x] 添加loading
+- [x] 更多模板主题选择

@@ -1,5 +1,6 @@
 import { Marked } from 'marked'
 import { markedHighlight } from 'marked-highlight'
+import { codeToHtml } from 'shiki'
 
 let marked: Marked
 
@@ -7,7 +8,6 @@ async function initMarked() {
   if (marked)
     return marked
   // const highlighter = await initHighlighter()
-  const { codeToHtml } = await import('shiki')
   marked = new Marked({
     gfm: true,
     breaks: true,

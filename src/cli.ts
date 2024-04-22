@@ -1,13 +1,14 @@
 import { readFileSync } from 'node:fs'
 import process from 'node:process'
 import cac from 'cac'
-
+import { THEME } from './constants'
 import { main } from './index'
 
 export interface ICliOption {
   target: string
   config: string
   deckName: string
+  theme: string
 }
 
 function createCli() {
@@ -20,10 +21,13 @@ function createCli() {
     .command('<mdFile>', 'markdown文件')
     .option('-t, --target <targetFile>', '输出的anki文件名 eg: "-d targe.apkg"')
     .option('-c, --config <configFile>', '配置文件 eg: "-c ./config.json"')
+    .option('-s, --theme <theme>', '样式主题可选 nord/minimal/dracula', {
+      default: THEME.NORD,
+    })
     .option('-d, --deckName <deckName>', '卡片组名 eg: "-d Test", Default: 取md文件中的"# xx"')
-    .action((mdFile: string, options: ICliOption) => {
+    .action(async (mdFile: string, options: ICliOption) => {
       try {
-        main({
+        await main({
           sourcePath: mdFile,
           ...options,
         })

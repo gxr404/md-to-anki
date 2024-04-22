@@ -2,7 +2,7 @@ import antfu from '@antfu/eslint-config'
 
 export default antfu(
   {
-    ignores: ['resources', 'example', '.vscode', '**/*.md'],
+    ignores: ['theme', 'example', '.vscode', '**/*.md'],
     typescript: true,
     formatters: true,
   },
