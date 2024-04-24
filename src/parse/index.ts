@@ -1,12 +1,12 @@
 import { readFile } from 'node:fs/promises'
 import { getConfig } from '../config'
-import { trimArray } from '../utils'
+import { removeMdComments, trimArray } from '../utils'
 import { md2Html } from './md'
 import { addMediaToCards, mediaList, resetMediaList } from './media'
 
 export async function parseMarkdown(file: string) {
   const mdBuffer = await readFile(file)
-  const mdString = mdBuffer.toString()
+  const mdString = removeMdComments(mdBuffer.toString())
   const { rawCards, deckName } = await splitByCards(mdString)
   // console.time('parseCardList')
   const { cards, media } = await parseCardList(rawCards, file)

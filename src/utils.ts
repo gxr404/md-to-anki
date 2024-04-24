@@ -62,3 +62,9 @@ export function getExtensionFromUrl(urlStr: string) {
 
   return extension ? `.${extension}` : ''
 }
+
+/** 删除markdown注释 */
+export function removeMdComments(md: string) {
+  const reg = /<!--\s*((.|\n)*?)\s*-->/gm
+  return md.replace(reg, '')
+}

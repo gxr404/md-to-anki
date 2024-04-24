@@ -1,12 +1,12 @@
 import * as fs from 'node:fs/promises'
 import axios from 'axios'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { parseCard, parseCardList, splitByCards } from '../../src/parse'
+import { parseCard, parseCardList, parseMarkdown, splitByCards } from '../../src/parse'
 import { getConfig, initConfig } from '../../src/config'
 
 vi.mock('node:fs/promises')
 
-const testMdStr = `
+const normalMdStr = `
 # Test Title
 
 ## test
@@ -42,6 +42,46 @@ var a = 13
 [#tag3]
 `
 
+const commentsMdStr = `
+# Test Title
+
+## test
+
+test1
+
+\`\`\`js
+var a = 13
+\`\`\`
+
+> test
+
+**abc**13123
+
+## test2
+
+## test3
+
+132
+
+## test4
+
+![](./1.jpg)
+
+## test5
+
+![](https://xx.com/1.jpg)
+
+> test
+
+[#tag1]
+[#tag2]
+[#tag3]
+
+<!-- ## test6
+
+test -->
+`
+
 beforeEach(() => {
   initConfig({})
 })
@@ -49,9 +89,30 @@ afterEach(() => {
   vi.restoreAllMocks()
 })
 
+describe('parse markdown', () => {
+  it('normal parse markdown', async () => {
+    vi.spyOn(fs, 'readFile').mockImplementation(async () => normalMdStr)
+    vi.spyOn(axios, 'get').mockImplementation(async () => ({
+      data: 'remote data',
+    }))
+    const data = await parseMarkdown('xxx.md')
+    expect(data.cards.length).toBe(4)
+    expect(data.media.length).toBe(2)
+  })
+  it ('parse has comments markdown', async () => {
+    vi.spyOn(fs, 'readFile').mockImplementation(async () => commentsMdStr)
+    vi.spyOn(axios, 'get').mockImplementation(async () => ({
+      data: 'remote data',
+    }))
+    const data = await parseMarkdown('xxx.md')
+    expect(data.cards.length).toBe(4)
+    expect(data.media.length).toBe(2)
+  })
+})
+
 describe('split Cards', () => {
   it('normal split cards', async () => {
-    const res = await splitByCards(testMdStr)
+    const res = await splitByCards(normalMdStr)
     // 此时的rawCards 还不是规范的card列表 可能含 卡片为空的情况
     expect(res.rawCards.length).toBe(6)
     expect(res.deckName).toBe('Test Title')
@@ -77,7 +138,7 @@ describe('parse card list', () => {
       data: 'remote data',
     }))
 
-    const { rawCards } = await splitByCards(testMdStr)
+    const { rawCards } = await splitByCards(normalMdStr)
     const res = await parseCardList(rawCards, 'source.md')
     // 真实的卡片列表
     expect(res.cards.length).toBe(4)

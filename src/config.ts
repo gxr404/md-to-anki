@@ -8,10 +8,6 @@ export function getDefaultConfig(theme = THEME.NORD): IConfig {
   const themeKey = (THEME as any)[String(theme).toUpperCase()]
   const themePath = `../theme/${themeKey}`
   return {
-    code: {
-      defaultLanguage: 'bash',
-      template: 'dark', // [default | dark]
-    },
     card: {
       // 卡片分割: ##.. xxx
       separator: '(?=^#{2,}\\s)',
@@ -22,7 +18,7 @@ export function getDefaultConfig(theme = THEME.NORD): IConfig {
     },
     deck: {
       titleSeparator: '^#\\s',
-      defaultName: 'mdanki',
+      defaultName: 'md-to-anki',
     },
     template: {
       formats: {
@@ -35,10 +31,6 @@ export function getDefaultConfig(theme = THEME.NORD): IConfig {
 }
 
 export interface IConfig {
-  code: {
-    defaultLanguage: string
-    template: string
-  }
   card: {
     separator: string
     frontBackSeparator: string
