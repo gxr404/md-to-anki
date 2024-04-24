@@ -82,14 +82,14 @@ $ md-to-anki ./simple.md
 > ✔ "Test"含卡片1张: /xxx/simple.apkg
 ```
 
-<div style="width:800px;display:flex;flex-direction: row;gap:10px">
+<div style="display:flex;flex-direction: row;gap:10px">
   <div>
     <p>卡片正面</p>
-    <img src="./example/resources/example1.png" alt="example1">
+    <img width="400px" style="display:block" src="./example/resources/example1.png" alt="example1">
   </div>
   <div>
     <p>卡片反面</p>
-    <img src="./example/resources/example1_2.png" alt="example1_2">
+    <img width="400px" style="display:block" src="./example/resources/example1_2.png" alt="example1_2">
   </div>
 </div>
 
@@ -114,14 +114,14 @@ $ md-to-anki ./simple.md -s minimal
 > ✔ "Test"含卡片1张: /xxx/simple.apkg
 ```
 
-<div style="width:800px;display:flex;flex-direction: row;gap:10px">
+<div style="display:flex;flex-direction: row;gap:10px">
   <div>
     <p>卡片正面</p>
-    <img src="./example/resources/example2.png" alt="example2">
+    <img width="400px" src="./example/resources/example2.png" alt="example2">
   </div>
   <div>
     <p>卡片反面</p>
-    <img src="./example/resources/example2_2.png" alt="example2_2">
+    <img width="400px" src="./example/resources/example2_2.png" alt="example2_2">
   </div>
 </div>
 
@@ -162,14 +162,14 @@ $ md-to-anki ./simple.md -c ./config.json -s dracula
 > ✔ "Test"含卡片1张: /xxx/simple.apkg
 ```
 
-<div style="width:800px;display:flex;flex-direction: row;gap:10px">
+<div style="display:flex;flex-direction: row;gap:10px">
   <div>
     <p>卡片正面</p>
-    <img src="./example/resources/example3.png" alt="example3">
+    <img width="400px" src="./example/resources/example3.png" alt="example3">
   </div>
   <div>
     <p>卡片反面</p>
-    <img src="./example/resources/example3_2.png" alt="example3_2">
+    <img width="400px" src="./example/resources/example3_2.png" alt="example3_2">
   </div>
 </div>
 
