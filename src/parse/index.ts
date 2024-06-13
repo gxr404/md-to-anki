@@ -41,6 +41,12 @@ export async function splitByCards(mdString: string) {
 function findParenTitle(card: string[]) {
   let levelTitle: string[] = []
   return card.map((str) => {
+    if (!str) {
+      return {
+        content: '',
+        levelTitle: [],
+      }
+    }
     const [matchStr, levelStr = '', curTitle = ''] = /^(#{2,})\s(.*)\n/.exec(str) || []
     const level = levelStr.trim().length ?? 0
     if (level >= 2) {
