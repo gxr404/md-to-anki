@@ -64,9 +64,13 @@ exports[`parse card list > normal parse card list 1`] = `
 exports[`split Cards > normal split cards 1`] = `
 {
   "deckName": "Test Title",
-  "rawCards": [
-    "# Test Title",
-    "## test
+  "resolveCards": [
+    {
+      "content": "# Test Title",
+      "levelTitle": [],
+    },
+    {
+      "content": "## test
 
 test1
 
@@ -77,14 +81,34 @@ var a = 13
 > test
 
 **abc**13123",
-    "## test2",
-    "## test3
+      "levelTitle": [
+        "test",
+      ],
+    },
+    {
+      "content": "## test2",
+      "levelTitle": [
+        "test",
+      ],
+    },
+    {
+      "content": "## test3
 
 132",
-    "## test4
+      "levelTitle": [
+        "test3",
+      ],
+    },
+    {
+      "content": "## test4
 
 ![](./1.jpg)",
-    "## test5
+      "levelTitle": [
+        "test4",
+      ],
+    },
+    {
+      "content": "## test5
 
 ![](https://xx.com/1.jpg)
 
@@ -93,6 +117,10 @@ var a = 13
 [#tag1]
 [#tag2]
 [#tag3]",
+      "levelTitle": [
+        "test5",
+      ],
+    },
   ],
 }
 `;

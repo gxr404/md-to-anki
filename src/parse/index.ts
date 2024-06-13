@@ -7,9 +7,9 @@ import { addMediaToCards, mediaList, resetMediaList } from './media'
 export async function parseMarkdown(file: string) {
   const mdBuffer = await readFile(file)
   const mdString = removeMdComments(mdBuffer.toString())
-  const { rawCards, deckName } = await splitByCards(mdString)
+  const { deckName, resolveCards } = await splitByCards(mdString)
   // console.time('parseCardList')
-  const { cards, media } = await parseCardList(rawCards, file)
+  const { cards, media } = await parseCardList(resolveCards, file)
   // console.timeEnd('parseCardList')
 
   return {
@@ -30,10 +30,31 @@ export async function splitByCards(mdString: string) {
   const rawCards = mdString
     .split(new RegExp(config.card.separator, 'm'))
     .map((line: string) => line.trim())
+  const resolveCards = findParenTitle(rawCards)
   return {
     deckName: getDeckName(rawCards),
-    rawCards,
+    // rawCards,
+    resolveCards,
   }
+}
+
+function findParenTitle(card: string[]) {
+  let levelTitle: string[] = []
+  return card.map((str) => {
+    const [matchStr, levelStr = '', curTitle = ''] = /^(#{2,})\s(.*)\n/.exec(str) || []
+    const level = levelStr.trim().length ?? 0
+    if (level >= 2) {
+      const levelIndex = level - 2
+      const newLevelTitle = [...levelTitle]
+      newLevelTitle[levelIndex] = curTitle.trim()
+      levelTitle = newLevelTitle
+    }
+    const content = matchStr ? str.replace(matchStr, `${levelStr} ${levelTitle.join('_')}\n`) : str
+    return {
+      content,
+      levelTitle,
+    }
+  })
 }
 
 function getDeckName(rawCards: string[]) {
@@ -48,12 +69,17 @@ function getDeckName(rawCards: string[]) {
   return deckName.replace(/(#\s|\n)/g, '').trim()
 }
 
-export async function parseCardList(rawCards: string[], sourceFile: string) {
+interface ResolveCard {
+  content: string
+  levelTitle: string[]
+}
+
+export async function parseCardList(resolveCards: ResolveCard[], sourceFile: string) {
   resetMediaList()
   const dirtyCards = await Promise.all(
-    rawCards.map(async (str: string) => {
+    resolveCards.map(async (item) => {
       // console.time(`parseCard#${i}`)
-      const card = await parseCard(str)
+      const card = await parseCard(item.content)
       // console.timeEnd(`parseCard#${i}`)
 
       if (card)

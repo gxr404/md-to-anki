@@ -114,7 +114,7 @@ describe('split Cards', () => {
   it('normal split cards', async () => {
     const res = await splitByCards(normalMdStr)
     // 此时的rawCards 还不是规范的card列表 可能含 卡片为空的情况
-    expect(res.rawCards.length).toBe(6)
+    expect(res.resolveCards.length).toBe(6)
     expect(res.deckName).toBe('Test Title')
     expect(res).toMatchSnapshot()
   })
@@ -129,6 +129,19 @@ describe('split Cards', () => {
     const { deckName } = await splitByCards(mdStr)
     expect(deckName).toBe('Title')
   })
+
+  it('多级卡片名需带上父级名称', async () => {
+    const mdStr = `# Title \n test \n## Title2\n test\n### Title3 \n test`
+    const { resolveCards } = await splitByCards(mdStr)
+    expect(resolveCards).toMatchObject([
+      { content: '# Title \n test', levelTitle: [] },
+      { content: '## Title2\n test', levelTitle: ['Title2'] },
+      {
+        content: '### Title2_Title3\n test',
+        levelTitle: ['Title2', 'Title3'],
+      },
+    ])
+  })
 })
 
 describe('parse card list', () => {
@@ -138,8 +151,8 @@ describe('parse card list', () => {
       data: 'remote data',
     }))
 
-    const { rawCards } = await splitByCards(normalMdStr)
-    const res = await parseCardList(rawCards, 'source.md')
+    const { resolveCards } = await splitByCards(normalMdStr)
+    const res = await parseCardList(resolveCards, 'source.md')
     // 真实的卡片列表
     expect(res.cards.length).toBe(4)
     expect(res.media.length).toBe(2)
@@ -150,8 +163,8 @@ describe('parse card list', () => {
     vi.spyOn(fs, 'readFile').mockImplementation(async () => 'local data')
     const mdStr = `## Title\nbody\n![media](./1.jpg)![media](./1.jpg)`
 
-    const { rawCards } = await splitByCards(mdStr)
-    const { media } = await parseCardList(rawCards, 'test.md')
+    const { resolveCards } = await splitByCards(mdStr)
+    const { media } = await parseCardList(resolveCards, 'test.md')
     expect(media.length).toBe(1)
     expect(media[0].data).toBe('local data')
   })
