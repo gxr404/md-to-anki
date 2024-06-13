@@ -51,7 +51,7 @@ function findParenTitle(card: string[]) {
     const level = levelStr.trim().length ?? 0
     if (level >= 2) {
       const levelIndex = level - 2
-      const newLevelTitle = [...levelTitle]
+      const newLevelTitle = [...levelTitle.slice(0, levelIndex + 1)]
       newLevelTitle[levelIndex] = curTitle.trim()
       levelTitle = newLevelTitle
     }

@@ -154,6 +154,20 @@ describe('split Cards', () => {
       },
     ])
   })
+
+  it('多级卡片名 三级后下个卡片回到二级时, levelTitle需仅有二级', async () => {
+    const mdStr = `# Title \n test \n## Title2\n### Title3 \n test\n## Title4\n test`
+    const { resolveCards } = await splitByCards(mdStr)
+    expect(resolveCards).toMatchObject([
+      { content: '# Title \n test', levelTitle: [] },
+      { content: '## Title2\n', levelTitle: ['Title2'] },
+      {
+        content: '### Title2_Title3\n test',
+        levelTitle: ['Title2', 'Title3'],
+      },
+      { content: '## Title4\n test', levelTitle: ['Title4'] },
+    ])
+  })
 })
 
 describe('parse card list', () => {
