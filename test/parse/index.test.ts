@@ -142,6 +142,18 @@ describe('split Cards', () => {
       },
     ])
   })
+  it('多级卡片名且父级卡片没内容时，需带上父级名称', async () => {
+    const mdStr = `# Title \n test \n## Title2\n### Title3 \n test`
+    const { resolveCards } = await splitByCards(mdStr)
+    expect(resolveCards).toMatchObject([
+      { content: '# Title \n test', levelTitle: [] },
+      { content: '## Title2\n', levelTitle: ['Title2'] },
+      {
+        content: '### Title2_Title3\n test',
+        levelTitle: ['Title2', 'Title3'],
+      },
+    ])
+  })
 })
 
 describe('parse card list', () => {

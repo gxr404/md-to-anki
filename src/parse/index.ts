@@ -47,7 +47,7 @@ function findParenTitle(card: string[]) {
         levelTitle: [],
       }
     }
-    const [matchStr, levelStr = '', curTitle = ''] = /^(#{2,})\s(.*)\n/.exec(str) || []
+    const [matchStr, levelStr = '', curTitle = ''] = /^(#{2,})\s(.*)\n?/.exec(str) || []
     const level = levelStr.trim().length ?? 0
     if (level >= 2) {
       const levelIndex = level - 2
