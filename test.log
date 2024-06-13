@@ -1,0 +1,4 @@
+
+> md-to-anki@0.0.20 test:example
+> node bin/index.mjs example
+

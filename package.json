@@ -1,7 +1,7 @@
 {
   "name": "md-to-anki",
   "type": "module",
-  "version": "0.0.20",
+  "version": "0.0.21",
   "description": "markdown to anki",
   "author": "gxr404",
   "license": "ISC",
